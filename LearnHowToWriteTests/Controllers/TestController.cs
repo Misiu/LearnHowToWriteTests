@@ -21,6 +21,11 @@ namespace LearnHowToWriteTests.Controllers
                 return Ok("Hello John!");
             }
 
+            if (name == "Sam")
+            {
+                return Ok("Hello Sam!");
+            }
+
             return BadRequest("Name is not John");
         }
     }
