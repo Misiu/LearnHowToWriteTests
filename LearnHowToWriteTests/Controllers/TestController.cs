@@ -26,7 +26,7 @@ namespace LearnHowToWriteTests.Controllers
                 return Ok("Hello Sam!");
             }
 
-            return BadRequest("Name is not John");
+            return BadRequest("Name is not John or Sam");
         }
     }
 }
