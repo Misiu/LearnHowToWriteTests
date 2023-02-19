@@ -33,6 +33,9 @@ public class TestControllerTests : IClassFixture<WebApplicationFactory<Program>>
     [Theory]
     [InlineData("Homer", "Hello Homer!")]
     [InlineData("Marge", "Hello Marge!")]
+    [InlineData("Bart", "Hello Bart!")]
+    [InlineData("Lisa", "Hello Lisa!")]
+    [InlineData("Maggie", "Hello Maggie!")]
     public async Task Get_WithValidName_ReturnsOk(string name, string expected)
     {
         // Arrange
