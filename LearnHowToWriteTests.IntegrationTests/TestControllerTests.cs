@@ -13,60 +13,52 @@ public class TestControllerTests : IClassFixture<WebApplicationFactory<Program>>
         _factory = factory;
     }
 
+    //if you do a get request to /Test you should get a 200 and Hello World!
     [Fact]
-    public async Task Get_EndpointsReturnSuccessAndCorrectContentType()
+    public async Task Get_ReturnsOk()
     {
         // Arrange
         var client = _factory.CreateClient();
 
         // Act
-        var response = await client.GetAsync("Test");
+        var response = await client.GetAsync("/Test");
 
         // Assert
-        response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode(); // Status Code 200-299
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync());
     }
 
-    [Fact]
-    public async Task Get_EndpointsReturnSuccessAndCorrectContentType1()
+    //if you do a get request to /Test/Homer you should get a 200 and Hello Homer!
+    [Theory]
+    [InlineData("Homer", "Hello Homer!")]
+    [InlineData("Marge", "Hello Marge!")]
+    public async Task Get_WithValidName_ReturnsOk(string name, string expected)
     {
         // Arrange
         var client = _factory.CreateClient();
 
         // Act
-        var response = await client.GetAsync("Test/John");
+        var response = await client.GetAsync($"/Test/{name}");
 
         // Assert
-        response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode(); // Status Code 200-299
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(expected, await response.Content.ReadAsStringAsync());
     }
 
+    //if name is not Homer, Marge, Bart, Lisa or Maggie you should get a 400
     [Fact]
-    public async Task Get_EndpointsReturnSuccessAndCorrectContentType2()
+    public async Task Get_WithInvalidName_ReturnsBadRequest()
     {
         // Arrange
         var client = _factory.CreateClient();
 
         // Act
-        var response = await client.GetAsync("Test/Sam");
-        response.EnsureSuccessStatusCode();
+        var response = await client.GetAsync("/Test/John");
 
-        //assert that response is "Hello Sam!"
-        var responseString = await response.Content.ReadAsStringAsync();
-        Assert.Equal("Hello Sam!", responseString);
-
-
-    }
-
-    [Fact]
-    public async Task Get_EndpointsReturnSuccessAndCorrectContentType3()
-    {
-        // Arrange
-        var client = _factory.CreateClient();
-
-        // Act
-        var response = await client.GetAsync("Test/Joe");
-
-        //assert that response is bad request
+        // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-
+        Assert.Equal("You are not a Simpson!", await response.Content.ReadAsStringAsync());
     }
 }
