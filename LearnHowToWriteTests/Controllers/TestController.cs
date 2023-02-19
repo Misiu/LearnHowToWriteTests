@@ -15,18 +15,16 @@ namespace LearnHowToWriteTests.Controllers
         [HttpGet("{name}")]
         public ActionResult<string> Get(string name)
         {
-            //if name == John return 200 else return bad request
-            if (name == "John")
+            return name switch
             {
-                return Ok("Hello John!");
-            }
-
-            if (name == "Sam")
-            {
-                return Ok("Hello Sam!");
-            }
-
-            return BadRequest("Name is not John or Sam");
+                //if name == John return 200 else return bad request
+                "Homer" => Ok("Hello Homer!"),
+                "Marge" => Ok("Hello Marge!"),
+                "Bart" => Ok("Hello Bart!"),
+                "Lisa" => Ok("Hello Lisa!"),
+                "Maggie" => Ok("Hello Maggie!"),
+                _ => BadRequest("You are not a Simpson!")
+            };
         }
     }
 }
