@@ -56,6 +56,7 @@ public class TestControllerTests : IClassFixture<WebApplicationFactory<Program>>
 
     }
 
+    [Fact]
     public async Task Get_EndpointsReturnSuccessAndCorrectContentType3()
     {
         // Arrange
